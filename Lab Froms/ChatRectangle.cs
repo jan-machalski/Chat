@@ -15,6 +15,7 @@ namespace Lab_Froms
 
     public partial class ChatRectangle : UserControl
     {
+        public bool you;
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
         private static extern IntPtr CreateRoundRectRgn
            (
@@ -34,14 +35,23 @@ namespace Lab_Froms
             timeLabel.Text = DateTime.Now.Hour.ToString() + ":" + DateTime.Now.Minute.ToString();
         }
 
-        public ChatRectangle(string author, string message, string time)
+        public ChatRectangle(string author, string message, string time,int width)
         {
             InitializeComponent();
+            you = (author == "you");
+            Width = width - 50;
+            using(Graphics g = Graphics.FromHwnd(IntPtr.Zero))
+            {
+                Height = 50 + (int)Math.Round(g.MeasureString(message, new Font(FontFamily.GenericSansSerif, 9),width).Height);
+            }
+            //Height = CalculateHeight(message, Width);
+            timeLabel.Width = messageLabel.Width = userLabel.Width = Width;
             Region = System.Drawing.Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 20, 20));
             userLabel.Text = author;
             messageLabel.Text = message;
-            timeLabel.Text = DateTime.Now.Hour.ToString() + ":" + DateTime.Now.Minute.ToString(); 
+            timeLabel.Text = time; 
         }
+
         private void label1_Click(object sender, EventArgs e)
         {
 

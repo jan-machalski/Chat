@@ -38,10 +38,11 @@
             // userLabel
             // 
             userLabel.AutoSize = true;
+            userLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 238);
             userLabel.ForeColor = Color.White;
             userLabel.Location = new Point(3, 0);
             userLabel.Name = "userLabel";
-            userLabel.Size = new Size(44, 15);
+            userLabel.Size = new Size(46, 15);
             userLabel.TabIndex = 0;
             userLabel.Text = "Author";
             // 
@@ -51,9 +52,9 @@
             timeLabel.Dock = DockStyle.Fill;
             timeLabel.Font = new Font("Segoe UI", 7F);
             timeLabel.ForeColor = Color.White;
-            timeLabel.Location = new Point(3, 39);
+            timeLabel.Location = new Point(3, 37);
             timeLabel.Name = "timeLabel";
-            timeLabel.Size = new Size(205, 20);
+            timeLabel.Size = new Size(209, 20);
             timeLabel.TabIndex = 1;
             timeLabel.Text = "hh:mm";
             timeLabel.TextAlign = ContentAlignment.MiddleRight;
@@ -65,14 +66,14 @@
             messageLabel.ForeColor = Color.White;
             messageLabel.Location = new Point(3, 20);
             messageLabel.Name = "messageLabel";
-            messageLabel.Size = new Size(205, 19);
+            messageLabel.Size = new Size(209, 17);
             messageLabel.TabIndex = 2;
             messageLabel.Text = "message";
             messageLabel.Click += label1_Click;
             // 
             // tableLayoutPanel1
             // 
-            tableLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            tableLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tableLayoutPanel1.ColumnCount = 1;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.Controls.Add(userLabel, 0, 0);
@@ -182,7 +183,7 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel1.Size = new Size(211, 59);
+            tableLayoutPanel1.Size = new Size(215, 57);
             tableLayoutPanel1.TabIndex = 3;
             // 
             // ChatRectangle
@@ -192,7 +193,7 @@
             BackColor = Color.Orange;
             Controls.Add(tableLayoutPanel1);
             Name = "ChatRectangle";
-            Size = new Size(219, 65);
+            Size = new Size(218, 63);
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
             ResumeLayout(false);

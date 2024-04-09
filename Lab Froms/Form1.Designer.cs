@@ -30,10 +30,14 @@
         {
             sendButton = new Button();
             textBox = new TextBox();
-            Canvas = new PictureBox();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            chatRectangle1 = new ChatRectangle();
-            ((System.ComponentModel.ISupportInitialize)Canvas).BeginInit();
+            panelContainer = new Panel();
+            menuStrip1 = new MenuStrip();
+            fileToolStripMenuItem = new ToolStripMenuItem();
+            connectToolStripMenuItem = new ToolStripMenuItem();
+            disconnectToolStripMenuItem = new ToolStripMenuItem();
+            exitToolStripMenuItem = new ToolStripMenuItem();
+            menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // sendButton
@@ -50,41 +54,73 @@
             // textBox
             // 
             textBox.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            textBox.BackColor = Color.White;
             textBox.Location = new Point(12, 527);
             textBox.Name = "textBox";
             textBox.Size = new Size(279, 23);
             textBox.TabIndex = 1;
+            textBox.KeyDown += textBox_KeyDown;
             // 
-            // Canvas
+            // panelContainer
             // 
-            Canvas.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            Canvas.Location = new Point(5, 5);
-            Canvas.Name = "Canvas";
-            Canvas.Size = new Size(373, 515);
-            Canvas.TabIndex = 2;
-            Canvas.TabStop = false;
+            panelContainer.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            panelContainer.AutoScroll = true;
+            panelContainer.BackColor = Color.White;
+            panelContainer.Location = new Point(0, 25);
+            panelContainer.Name = "panelContainer";
+            panelContainer.Size = new Size(384, 496);
+            panelContainer.TabIndex = 2;
             // 
-            // chatRectangle1
+            // menuStrip1
             // 
-            chatRectangle1.BackColor = Color.Orange;
-            chatRectangle1.Location = new Point(72, 108);
-            chatRectangle1.Name = "chatRectangle1";
-            chatRectangle1.Size = new Size(219, 65);
-            chatRectangle1.TabIndex = 3;
+            menuStrip1.Items.AddRange(new ToolStripItem[] { fileToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(384, 24);
+            menuStrip1.TabIndex = 3;
+            menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { connectToolStripMenuItem, disconnectToolStripMenuItem, exitToolStripMenuItem });
+            fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            fileToolStripMenuItem.Size = new Size(37, 20);
+            fileToolStripMenuItem.Text = "File";
+            // 
+            // connectToolStripMenuItem
+            // 
+            connectToolStripMenuItem.Name = "connectToolStripMenuItem";
+            connectToolStripMenuItem.Size = new Size(180, 22);
+            connectToolStripMenuItem.Text = "Connect";
+            // 
+            // disconnectToolStripMenuItem
+            // 
+            disconnectToolStripMenuItem.Enabled = false;
+            disconnectToolStripMenuItem.Name = "disconnectToolStripMenuItem";
+            disconnectToolStripMenuItem.Size = new Size(180, 22);
+            disconnectToolStripMenuItem.Text = "Disconnect";
+            // 
+            // exitToolStripMenuItem
+            // 
+            exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            exitToolStripMenuItem.Size = new Size(180, 22);
+            exitToolStripMenuItem.Text = "Exit";
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(384, 561);
-            Controls.Add(chatRectangle1);
-            Controls.Add(Canvas);
+            Controls.Add(panelContainer);
             Controls.Add(textBox);
             Controls.Add(sendButton);
+            Controls.Add(menuStrip1);
             MinimumSize = new Size(320, 480);
             Name = "Form1";
             Text = "Group Chat";
-            ((System.ComponentModel.ISupportInitialize)Canvas).EndInit();
+            Resize += Form1_Resize;
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -93,8 +129,12 @@
 
         private Button sendButton;
         private TextBox textBox;
-        private PictureBox Canvas;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private ChatRectangle chatRectangle1;
+        private Panel panelContainer;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem fileToolStripMenuItem;
+        private ToolStripMenuItem connectToolStripMenuItem;
+        private ToolStripMenuItem disconnectToolStripMenuItem;
+        private ToolStripMenuItem exitToolStripMenuItem;
     }
 }
