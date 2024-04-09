@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Text;
+using System.IO;
 
 namespace Lab_Froms
 {
@@ -14,6 +15,7 @@ namespace Lab_Froms
         private bool youSend;
         private string username = "";
         private TcpClient tcpClient = null;
+        private string name = null;
         private bool connected = false;
 
         //private Bitmap messageArea;
@@ -30,6 +32,7 @@ namespace Lab_Froms
             panel.BackColor = Color.White;
             panelContainer.Controls.Add(panel);
 
+            this.FormClosing += new FormClosingEventHandler(Form_FormClosing);
         }
 
 
@@ -39,36 +42,57 @@ namespace Lab_Froms
         }
         private void AddToPanel(string author, string message, string time)
         {
-            int offset = 49;
-            if (author != "you")
-                offset = 3;
-            var place = new Point(offset, panel.Height);
-            var ch = new ChatRectangle(author, message, time, panel.Width);
-            panel.Height += (5 + ch.Height);
-            ch.Location = place;
-            panel.Controls.Add(ch);
+            if (author != null)
+            {
+                int offset = 49;
+                if (author != "you")
+                    offset = 1;
+                var place = new Point(offset, panel.Height);
+                var ch = new ChatRectangle(author, message, time, panel.Width);
+                panel.Height += (5 + ch.Height);
+                ch.Location = place;
+                panel.Controls.Add(ch);
+            }
+            else
+            {
+
+                Label connectedLabel = new Label();
+                connectedLabel.Text = message;
+                connectedLabel.Font = new System.Drawing.Font("Segoe UI", 9, FontStyle.Regular);
+                connectedLabel.ForeColor = Color.DarkGray;
+                connectedLabel.BackColor = Color.Transparent;
+                var place = new Point(panel.Width / 2 - 20, panel.Height);
+                connectedLabel.Location = place;
+                panel.Height += (5 + connectedLabel.Height);
+                panel.Controls.Add(connectedLabel);
+
+            }
 
         }
-        private void AddMessage()
+        private async void AddMessage(string user, string message, DateTime time)
+        {
+            string when = $"{time:HH:mm}";
+            AddToPanel(user, message, when);
+            messages.Add((user, message, when));
+            if (panel.Height > panelContainer.Height)
+            {
+                panelContainer.AutoScrollPosition = new Point(0, panel.Height - panelContainer.Height);
+            }
+        }
+        private async void AddMessage()
         {
 
             if (textBox.Text.Length > 0)
             {
 
                 string time = $"{DateTime.Now:HH:mm}";
-                var place = new Point(1, 1);
-                string text;
-                if (youSend)
-                    text = "you";
-                else
-                    text = "not you";
-                youSend = !youSend;
-                AddToPanel(text, textBox.Text, time);
+                await SendMessage(new Messages.Message(name, textBox.Text, DateTime.Now));
+                AddToPanel("you", textBox.Text, time);
                 if (panel.Height > panelContainer.Height)
                 {
                     panelContainer.AutoScrollPosition = new Point(0, panel.Height - panelContainer.Height);
                 }
-                messages.Add((text, textBox.Text, time));
+                messages.Add(("you", textBox.Text, time));
                 textBox.Text = "";
             }
         }
@@ -84,6 +108,12 @@ namespace Lab_Froms
 
         private void Form1_Resize(object sender, EventArgs e)
         {
+            float scroll_ratio = 0;
+            if (panel.Height > panelContainer.Height)
+            {
+                var panel_height = panelContainer.AutoScrollPosition.Y;
+                scroll_ratio = (float)(panel_height - panelContainer.Location.Y) / (panel.Height);
+            }
             panelContainer.Location = new Point(0, 25);
             panelContainer.Size = new Size(this.Width - 16, textBox.Location.Y - 5 - 25);
             panelContainer.Controls.Clear();
@@ -93,6 +123,12 @@ namespace Lab_Froms
             panelContainer.Controls.Add(panel);
             foreach (var t in messages)
                 AddToPanel(t.who, t.message, t.when);
+            if (panel.Height > panelContainer.Height)
+            {
+                var scrollpos = panelContainer.Location.Y + scroll_ratio * (panel.Height);
+                scrollpos = Math.Min(panel.Height - panelContainer.Height + panel.Location.Y, scrollpos);
+                panelContainer.AutoScrollPosition = new Point(0, (int)scrollpos);
+            }
         }
 
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -106,59 +142,105 @@ namespace Lab_Froms
             Form2 connect_window = new Form2(this);
             connect_window.ShowDialog();
         }
+        public async Task SendMessage(Messages.Message message)
+        {
+            if (tcpClient == null)
+                return;
+            string json = JsonSerializer.Serialize(message);
+            NetworkStream stream = tcpClient.GetStream();
+
+            StreamWriter writer = new StreamWriter(stream);
+            await writer.WriteLineAsync(json);
+            await writer.FlushAsync();
+
+        }
         public async Task ConnectToServer(Form2 child, string address, int port, string username, string key)
         {
-            try
+
+            name = username;
+            tcpClient = new TcpClient();
+            Authorization authorization = new Authorization(username, key);
+            string json = JsonSerializer.Serialize(authorization);
+
+            await tcpClient.ConnectAsync(address, port);
+            child.UpdateProgressBar(25);
+
+
+            NetworkStream stream = tcpClient.GetStream();
+
+            StreamWriter writer = new StreamWriter(stream);
+            await writer.WriteLineAsync(json);
+            await writer.FlushAsync();
+
+            child.UpdateProgressBar(50);
+            StreamReader streamReader = new StreamReader(stream);
+            string recieved = streamReader.ReadLine();
+            Messages.Message message = JsonSerializer.Deserialize<Messages.Message>(recieved);
+
+
+            if (message.Text == Messages.Message.Authorized)
             {
-                tcpClient = new TcpClient();
-                Authorization authorization = new Authorization(username, key);
-                string json = JsonSerializer.Serialize(authorization);
-
-                await tcpClient.ConnectAsync(address, port);
-                child.UpdateProgressBar(25);
-
-
-                using (NetworkStream stream = tcpClient.GetStream())
-                {
-                    StreamWriter writer = new StreamWriter(stream);
-                    writer.Write(json);
-                    child.UpdateProgressBar(50);
-                    StreamReader streamReader = new StreamReader(stream);
-                    string recieved = await streamReader.ReadToEndAsync();
-                    Messages.Message message = JsonSerializer.Deserialize<Messages.Message>(recieved);
-
-                    if (message.Text == Messages.Message.Authorized)
-                        child.UpdateProgressBar(75);
-                    else
-                    {
-                        child.UpdateProgressBar(0);
-                        connectToolStripMenuItem.Enabled = true;
-                        child.Finish("Unable to connect to server");
-                        connectToolStripMenuItem.Enabled = true;
-                        tcpClient.Close();
-                    }
-                    child.UpdateProgressBar(100);
-                    disconnectToolStripMenuItem.Enabled = true;
-                    child.Finish("Connected succesfully");
-                }
+                child.UpdateProgressBar(75);
             }
-            catch (Exception ex)
+            else
             {
+
                 child.UpdateProgressBar(0);
                 connectToolStripMenuItem.Enabled = true;
-                child.Finish("Unable to connect to server");
+                child.Finish("Unable to connect to serverA");
                 connectToolStripMenuItem.Enabled = true;
                 tcpClient.Close();
+            }
+
+            child.UpdateProgressBar(100);
+            messages.Add((null, "Connected", null));
+            AddToPanel(null, "Connected", null);
+            disconnectToolStripMenuItem.Enabled = true;
+            child.Finish("Connected succesfully");
+            ReadMessages();
+
+        }
+        public async Task ReadMessages()
+        {
+            Stream stream = tcpClient.GetStream();
+            StreamReader streamReader = new StreamReader(stream);
+            while (tcpClient != null)
+            {
+                
+                string recieved = await streamReader.ReadLineAsync();
+                if (!tcpClient.Connected)
+                {
+                    tcpClient.Close();
+                    disconnectToolStripMenuItem.Enabled = false;
+                    connectToolStripMenuItem.Enabled = true;
+                    AddMessage(null, "Disconnected", DateTime.Now);
+                    break;
+                }
+                Messages.Message message = JsonSerializer.Deserialize<Messages.Message>(recieved);
+                AddMessage(message.Sender, message.Text, message.Time);
             }
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(tcpClient != null)
+            if (tcpClient != null)
             {
                 tcpClient.Close();
             }
             this.Close();
+        }
+
+        private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tcpClient.Close();
+            disconnectToolStripMenuItem.Enabled = false;
+            connectToolStripMenuItem.Enabled = true;
+            AddMessage(null, "Disconnected", DateTime.Now);
+        }
+        private void Form_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if(tcpClient !=null)
+                tcpClient.Close();
         }
     }
 

@@ -101,6 +101,7 @@
             disconnectToolStripMenuItem.Name = "disconnectToolStripMenuItem";
             disconnectToolStripMenuItem.Size = new Size(180, 22);
             disconnectToolStripMenuItem.Text = "Disconnect";
+            disconnectToolStripMenuItem.Click += disconnectToolStripMenuItem_Click;
             // 
             // exitToolStripMenuItem
             // 

@@ -39,7 +39,7 @@ namespace Lab_Froms
         }
         public void Finish(string message)
         {
-            MessageBox.Show(message);
+            MessageBox.Show(message,"Connection status", MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.Close();
         }
 
