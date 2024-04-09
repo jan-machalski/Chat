@@ -1,5 +1,10 @@
 using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
+using Messages;
+using System.Net.Sockets;
+using System.Text.Json.Serialization;
+using System.Text.Json;
+using System.Text;
 
 namespace Lab_Froms
 {
@@ -7,6 +12,9 @@ namespace Lab_Froms
     {
         private Panel panel;
         private bool youSend;
+        private string username = "";
+        private TcpClient tcpClient = null;
+        private bool connected = false;
 
         //private Bitmap messageArea;
         List<(string who, string message, string when)> messages;
@@ -56,16 +64,12 @@ namespace Lab_Froms
                     text = "not you";
                 youSend = !youSend;
                 AddToPanel(text, textBox.Text, time);
-                //var ch = new ChatRectangle(text, textBox.Text, time,panel.Width);
-                if(panel.Height > panelContainer.Height)
+                if (panel.Height > panelContainer.Height)
                 {
                     panelContainer.AutoScrollPosition = new Point(0, panel.Height - panelContainer.Height);
                 }
                 messages.Add((text, textBox.Text, time));
                 textBox.Text = "";
-
-                //ch.Location = new Point(1, r.Next() % panel.Height);
-                //panel.Controls.Add(ch);
             }
         }
 
@@ -89,6 +93,73 @@ namespace Lab_Froms
             panelContainer.Controls.Add(panel);
             foreach (var t in messages)
                 AddToPanel(t.who, t.message, t.when);
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void connectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            connectToolStripMenuItem.Enabled = false;
+            Form2 connect_window = new Form2(this);
+            connect_window.ShowDialog();
+        }
+        public async Task ConnectToServer(Form2 child, string address, int port, string username, string key)
+        {
+            try
+            {
+                tcpClient = new TcpClient();
+                Authorization authorization = new Authorization(username, key);
+                string json = JsonSerializer.Serialize(authorization);
+
+                await tcpClient.ConnectAsync(address, port);
+                child.UpdateProgressBar(25);
+
+
+                using (NetworkStream stream = tcpClient.GetStream())
+                {
+                    StreamWriter writer = new StreamWriter(stream);
+                    writer.Write(json);
+                    child.UpdateProgressBar(50);
+                    StreamReader streamReader = new StreamReader(stream);
+                    string recieved = await streamReader.ReadToEndAsync();
+                    MessageBox.Show(recieved);
+                    Messages.Message message = JsonSerializer.Deserialize<Messages.Message>(recieved);
+
+                    if (message.Text == Messages.Message.Authorized)
+                        child.UpdateProgressBar(75);
+                    else
+                    {
+                        child.UpdateProgressBar(0);
+                        connectToolStripMenuItem.Enabled = true;
+                        child.Finish("Unable to connect to server");
+                        connectToolStripMenuItem.Enabled = true;
+                        tcpClient.Close();
+                    }
+                    child.UpdateProgressBar(100);
+                    disconnectToolStripMenuItem.Enabled = true;
+                    child.Finish("Connected succesfully");
+                }
+            }
+            catch (Exception ex)
+            {
+                child.UpdateProgressBar(0);
+                connectToolStripMenuItem.Enabled = true;
+                child.Finish("Unable to connect to server");
+                connectToolStripMenuItem.Enabled = true;
+                tcpClient.Close();
+            }
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(tcpClient != null)
+            {
+                tcpClient.Close();
+            }
+            this.Close();
         }
     }
 

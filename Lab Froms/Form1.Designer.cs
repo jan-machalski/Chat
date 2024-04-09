@@ -79,6 +79,7 @@
             menuStrip1.Size = new Size(384, 24);
             menuStrip1.TabIndex = 3;
             menuStrip1.Text = "menuStrip1";
+            menuStrip1.ItemClicked += menuStrip1_ItemClicked;
             // 
             // fileToolStripMenuItem
             // 
@@ -92,6 +93,7 @@
             connectToolStripMenuItem.Name = "connectToolStripMenuItem";
             connectToolStripMenuItem.Size = new Size(180, 22);
             connectToolStripMenuItem.Text = "Connect";
+            connectToolStripMenuItem.Click += connectToolStripMenuItem_Click;
             // 
             // disconnectToolStripMenuItem
             // 
@@ -105,6 +107,7 @@
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             exitToolStripMenuItem.Size = new Size(180, 22);
             exitToolStripMenuItem.Text = "Exit";
+            exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
             // 
             // Form1
             // 
