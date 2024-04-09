@@ -125,7 +125,6 @@ namespace Lab_Froms
                     child.UpdateProgressBar(50);
                     StreamReader streamReader = new StreamReader(stream);
                     string recieved = await streamReader.ReadToEndAsync();
-                    MessageBox.Show(recieved);
                     Messages.Message message = JsonSerializer.Deserialize<Messages.Message>(recieved);
 
                     if (message.Text == Messages.Message.Authorized)
