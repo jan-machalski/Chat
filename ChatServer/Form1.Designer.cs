@@ -42,12 +42,12 @@
             label3 = new Label();
             label4 = new Label();
             ShowKeyBox = new CheckBox();
-            MessageBox = new TextBox();
+            ServerMessageBox = new TextBox();
             SendButton = new Button();
             logTextBox = new TextBox();
             ClearButton = new Button();
             label5 = new Label();
-            button1 = new Button();
+            DisconnectAllButton = new Button();
             SuspendLayout();
             // 
             // StartStopButton
@@ -58,6 +58,7 @@
             StartStopButton.TabIndex = 0;
             StartStopButton.Text = "Start";
             StartStopButton.UseVisualStyleBackColor = true;
+            StartStopButton.Click += StartStopButton_Click;
             // 
             // listView
             // 
@@ -141,11 +142,11 @@
             KeyBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             KeyBox.Location = new Point(282, 46);
             KeyBox.Name = "KeyBox";
-            KeyBox.PasswordChar = '*';
             KeyBox.Size = new Size(70, 23);
             KeyBox.TabIndex = 7;
             KeyBox.TextAlign = HorizontalAlignment.Center;
             KeyBox.UseSystemPasswordChar = true;
+            KeyBox.TextChanged += KeyBox_TextChanged;
             // 
             // label3
             // 
@@ -179,13 +180,13 @@
             ShowKeyBox.UseVisualStyleBackColor = true;
             ShowKeyBox.CheckedChanged += ShowKeyBox_CheckedChanged;
             // 
-            // MessageBox
+            // ServerMessageBox
             // 
-            MessageBox.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            MessageBox.Location = new Point(3, 288);
-            MessageBox.Name = "MessageBox";
-            MessageBox.Size = new Size(268, 23);
-            MessageBox.TabIndex = 11;
+            ServerMessageBox.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            ServerMessageBox.Location = new Point(3, 288);
+            ServerMessageBox.Name = "ServerMessageBox";
+            ServerMessageBox.Size = new Size(268, 23);
+            ServerMessageBox.TabIndex = 11;
             // 
             // SendButton
             // 
@@ -196,13 +197,17 @@
             SendButton.TabIndex = 12;
             SendButton.Text = "Send";
             SendButton.UseVisualStyleBackColor = true;
+            SendButton.Click += SendButton_Click;
             // 
             // logTextBox
             // 
             logTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            logTextBox.BackColor = Color.White;
             logTextBox.Location = new Point(3, 144);
             logTextBox.Multiline = true;
             logTextBox.Name = "logTextBox";
+            logTextBox.ReadOnly = true;
+            logTextBox.ScrollBars = ScrollBars.Vertical;
             logTextBox.Size = new Size(349, 138);
             logTextBox.TabIndex = 13;
             // 
@@ -214,6 +219,7 @@
             ClearButton.TabIndex = 15;
             ClearButton.Text = "Clear";
             ClearButton.UseVisualStyleBackColor = true;
+            ClearButton.Click += ClearButton_Click;
             // 
             // label5
             // 
@@ -224,27 +230,28 @@
             label5.TabIndex = 16;
             label5.Text = "Log";
             // 
-            // button1
+            // DisconnectAllButton
             // 
-            button1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            button1.Location = new Point(253, 118);
-            button1.Name = "button1";
-            button1.Size = new Size(99, 23);
-            button1.TabIndex = 17;
-            button1.Text = "Disconnect all";
-            button1.UseVisualStyleBackColor = true;
+            DisconnectAllButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            DisconnectAllButton.Location = new Point(253, 118);
+            DisconnectAllButton.Name = "DisconnectAllButton";
+            DisconnectAllButton.Size = new Size(99, 23);
+            DisconnectAllButton.TabIndex = 17;
+            DisconnectAllButton.Text = "Disconnect all";
+            DisconnectAllButton.UseVisualStyleBackColor = true;
+            DisconnectAllButton.Click += DisconnectAllButton_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(584, 311);
-            Controls.Add(button1);
+            Controls.Add(DisconnectAllButton);
             Controls.Add(label5);
             Controls.Add(ClearButton);
             Controls.Add(logTextBox);
             Controls.Add(SendButton);
-            Controls.Add(MessageBox);
+            Controls.Add(ServerMessageBox);
             Controls.Add(ShowKeyBox);
             Controls.Add(label4);
             Controls.Add(label3);
@@ -277,12 +284,12 @@
         private Label label3;
         private Label label4;
         private CheckBox ShowKeyBox;
-        private TextBox MessageBox;
+        private TextBox ServerMessageBox;
         private Button SendButton;
         private TextBox logTextBox;
         private Button ClearButton;
         private Label label5;
-        private Button button1;
+        private Button DisconnectAllButton;
         private ColumnHeader NameColumn;
         private ColumnHeader DisconnectColumn;
     }

@@ -179,9 +179,10 @@ namespace Lab_Froms
 
                 child.UpdateProgressBar(0);
                 connectToolStripMenuItem.Enabled = true;
-                child.Finish("Unable to connect to serverA");
+                child.Finish("Unable to connect to server");
                 connectToolStripMenuItem.Enabled = true;
                 tcpClient.Close();
+                return;
             }
 
             child.UpdateProgressBar(100);

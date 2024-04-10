@@ -108,10 +108,10 @@
             // 
             keyBox.Location = new Point(239, 63);
             keyBox.Name = "keyBox";
-            keyBox.PasswordChar = '*';
             keyBox.Size = new Size(100, 23);
             keyBox.TabIndex = 7;
             keyBox.TextAlign = HorizontalAlignment.Center;
+            keyBox.UseSystemPasswordChar = true;
             // 
             // showKeyBox
             // 
