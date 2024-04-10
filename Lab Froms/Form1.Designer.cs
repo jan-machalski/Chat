@@ -91,7 +91,7 @@
             // connectToolStripMenuItem
             // 
             connectToolStripMenuItem.Name = "connectToolStripMenuItem";
-            connectToolStripMenuItem.Size = new Size(180, 22);
+            connectToolStripMenuItem.Size = new Size(133, 22);
             connectToolStripMenuItem.Text = "Connect";
             connectToolStripMenuItem.Click += connectToolStripMenuItem_Click;
             // 
@@ -99,14 +99,14 @@
             // 
             disconnectToolStripMenuItem.Enabled = false;
             disconnectToolStripMenuItem.Name = "disconnectToolStripMenuItem";
-            disconnectToolStripMenuItem.Size = new Size(180, 22);
+            disconnectToolStripMenuItem.Size = new Size(133, 22);
             disconnectToolStripMenuItem.Text = "Disconnect";
             disconnectToolStripMenuItem.Click += disconnectToolStripMenuItem_Click;
             // 
             // exitToolStripMenuItem
             // 
             exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            exitToolStripMenuItem.Size = new Size(180, 22);
+            exitToolStripMenuItem.Size = new Size(133, 22);
             exitToolStripMenuItem.Text = "Exit";
             exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
             // 

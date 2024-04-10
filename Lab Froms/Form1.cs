@@ -108,27 +108,19 @@ namespace Lab_Froms
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            float scroll_ratio = 0;
-            if (panel.Height > panelContainer.Height)
-            {
-                var panel_height = panelContainer.AutoScrollPosition.Y;
-                scroll_ratio = (float)(panel_height - panelContainer.Location.Y) / (panel.Height);
-            }
+
             panelContainer.Location = new Point(0, 25);
             panelContainer.Size = new Size(this.Width - 16, textBox.Location.Y - 5 - 25);
             panelContainer.Controls.Clear();
             panel = new Panel();
+            panel.Controls.Clear();
             panel.Size = new Size(panelContainer.Width - 20, 5);
             panel.BackColor = Color.White;
             panelContainer.Controls.Add(panel);
             foreach (var t in messages)
                 AddToPanel(t.who, t.message, t.when);
-            if (panel.Height > panelContainer.Height)
-            {
-                var scrollpos = panelContainer.Location.Y + scroll_ratio * (panel.Height);
-                scrollpos = Math.Min(panel.Height - panelContainer.Height + panel.Location.Y, scrollpos);
-                panelContainer.AutoScrollPosition = new Point(0, (int)scrollpos);
-            }
+
+
         }
 
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -208,13 +200,9 @@ namespace Lab_Froms
             {
                 
                 string recieved = await streamReader.ReadLineAsync();
-                if (!tcpClient.Connected)
+                if(recieved == null)
                 {
-                    tcpClient.Close();
-                    disconnectToolStripMenuItem.Enabled = false;
-                    connectToolStripMenuItem.Enabled = true;
-                    AddMessage(null, "Disconnected", DateTime.Now);
-                    break;
+                    Server_Disconnect();
                 }
                 Messages.Message message = JsonSerializer.Deserialize<Messages.Message>(recieved);
                 AddMessage(message.Sender, message.Text, message.Time);
@@ -231,6 +219,10 @@ namespace Lab_Froms
         }
 
         private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Server_Disconnect();
+        }
+        private void Server_Disconnect()
         {
             tcpClient.Close();
             disconnectToolStripMenuItem.Enabled = false;
