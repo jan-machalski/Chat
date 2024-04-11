@@ -33,6 +33,7 @@ namespace Lab_Froms
             panelContainer.Controls.Add(panel);
 
             this.FormClosing += new FormClosingEventHandler(Form_FormClosing);
+            Adjust();
         }
 
 
@@ -108,7 +109,10 @@ namespace Lab_Froms
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-
+            Adjust();
+        }
+        private void Adjust()
+        {
             panelContainer.Location = new Point(0, 30);
             panelContainer.Size = new Size(this.Width - 20, textBox.Location.Y - 5 - 25);
             panelContainer.Controls.Clear();
@@ -123,7 +127,6 @@ namespace Lab_Froms
             {
                 panelContainer.AutoScrollPosition = new Point(0, panel.Height - panelContainer.Height);
             }
-
         }
 
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
