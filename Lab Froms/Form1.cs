@@ -19,7 +19,7 @@ namespace Lab_Froms
         private bool connected = false;
 
         //private Bitmap messageArea;
-        List<(string who, string message, string when)> messages;
+        List<(string who, string message, string when)> messages = new List<(string who, string message, string when)>();
         public Form1()
         {
             InitializeComponent();
@@ -28,7 +28,7 @@ namespace Lab_Froms
             messages = new List<(string who, string message, string when)>();
             youSend = true;
             panel = new Panel();
-            panel.Size = new Size(panelContainer.Width - 20, 5);
+            panel.Size = new Size(panelContainer.Width - 25, 5);
             panel.BackColor = Color.White;
             panelContainer.Controls.Add(panel);
 
@@ -109,17 +109,20 @@ namespace Lab_Froms
         private void Form1_Resize(object sender, EventArgs e)
         {
 
-            panelContainer.Location = new Point(0, 25);
-            panelContainer.Size = new Size(this.Width - 16, textBox.Location.Y - 5 - 25);
+            panelContainer.Location = new Point(0, 30);
+            panelContainer.Size = new Size(this.Width - 20, textBox.Location.Y - 5 - 25);
             panelContainer.Controls.Clear();
             panel = new Panel();
             panel.Controls.Clear();
-            panel.Size = new Size(panelContainer.Width - 20, 5);
+            panel.Size = new Size(panelContainer.Width - 28, 5);
             panel.BackColor = Color.White;
             panelContainer.Controls.Add(panel);
             foreach (var t in messages)
                 AddToPanel(t.who, t.message, t.when);
-
+            if (panel.Height > panelContainer.Height)
+            {
+                panelContainer.AutoScrollPosition = new Point(0, panel.Height - panelContainer.Height);
+            }
 
         }
 

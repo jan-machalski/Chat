@@ -201,15 +201,15 @@ namespace ChatServer
 
         private async void SendButton_Click(object sender, EventArgs e)
         {
-            Messages.Message message = new Messages.Message(UsernameBox.Text,ServerMessageBox.Text,DateTime.Now);
+            Messages.Message message = new Messages.Message(UsernameBox.Text, ServerMessageBox.Text, DateTime.Now);
             AppendLogTextBox(UsernameBox.Text + ": " + ServerMessageBox.Text);
             string to_send = JsonSerializer.Serialize(message);
             foreach (var p in clients)
             {
-                 NetworkStream otherStream = p.Value.GetStream();
-                 StreamWriter otherStreamWriter = new StreamWriter(otherStream);
-                 await otherStreamWriter.WriteLineAsync(to_send);
-                 await otherStreamWriter.FlushAsync();
+                NetworkStream otherStream = p.Value.GetStream();
+                StreamWriter otherStreamWriter = new StreamWriter(otherStream);
+                await otherStreamWriter.WriteLineAsync(to_send);
+                await otherStreamWriter.FlushAsync();
             }
         }
     }
