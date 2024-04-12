@@ -42,7 +42,7 @@ namespace Lab_Froms
             Width = width - 50;
             using(Graphics g = Graphics.FromHwnd(IntPtr.Zero))
             {
-                Height = 60 + (int)Math.Round(g.MeasureString(message, new Font(FontFamily.GenericSansSerif, 11),width).Height);
+                Height = 60 + (int)Math.Round(g.MeasureString(message, new Font(FontFamily.GenericSansSerif, 10),width).Height);
             }
             //Height = CalculateHeight(message, Width);
             timeLabel.Width = messageLabel.Width = userLabel.Width = Width;

@@ -233,6 +233,7 @@ namespace ChatServer
         {
             Messages.Message message = new Messages.Message(UsernameBox.Text, ServerMessageBox.Text, DateTime.Now);
             AppendLogTextBox(UsernameBox.Text + ": " + ServerMessageBox.Text);
+            ServerMessageBox.Text = "";
             string to_send = JsonSerializer.Serialize(message);
             foreach (var p in clients)
             {
