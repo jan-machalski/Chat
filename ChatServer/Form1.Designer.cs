@@ -29,10 +29,6 @@
         private void InitializeComponent()
         {
             StartStopButton = new Button();
-            listView = new ListView();
-            ID_column = new ColumnHeader();
-            NameColumn = new ColumnHeader();
-            DisconnectColumn = new ColumnHeader();
             label1 = new Label();
             label2 = new Label();
             AddressBox = new TextBox();
@@ -48,31 +44,175 @@
             ClearButton = new Button();
             label5 = new Label();
             DisconnectAllButton = new Button();
+            ID_column = new ColumnHeader();
+            NameColumn = new ColumnHeader();
+            listView = new ListView();
+            KickButton = new Button();
             SuspendLayout();
             // 
             // StartStopButton
             // 
-            StartStopButton.Location = new Point(4, 12);
-            StartStopButton.Margin = new Padding(4, 5, 4, 5);
+            StartStopButton.Location = new Point(3, 7);
             StartStopButton.Name = "StartStopButton";
-            StartStopButton.Size = new Size(107, 38);
+            StartStopButton.Size = new Size(75, 23);
             StartStopButton.TabIndex = 0;
             StartStopButton.Text = "Start";
             StartStopButton.UseVisualStyleBackColor = true;
             StartStopButton.Click += StartStopButton_Click;
             // 
-            // listView
+            // label1
             // 
-            listView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            listView.Columns.AddRange(new ColumnHeader[] { ID_column, NameColumn, DisconnectColumn });
-            listView.Enabled = false;
-            listView.Location = new Point(511, 3);
-            listView.Margin = new Padding(4, 5, 4, 5);
-            listView.Name = "listView";
-            listView.Size = new Size(321, 514);
-            listView.TabIndex = 1;
-            listView.UseCompatibleStateImageBehavior = false;
-            listView.View = View.Details;
+            label1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            label1.AutoSize = true;
+            label1.Location = new Point(104, 9);
+            label1.Name = "label1";
+            label1.Size = new Size(52, 15);
+            label1.TabIndex = 2;
+            label1.Text = "Address:";
+            // 
+            // label2
+            // 
+            label2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            label2.AutoSize = true;
+            label2.Location = new Point(246, 11);
+            label2.Name = "label2";
+            label2.Size = new Size(32, 15);
+            label2.TabIndex = 3;
+            label2.Text = "Port:";
+            // 
+            // AddressBox
+            // 
+            AddressBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            AddressBox.Location = new Point(163, 7);
+            AddressBox.Name = "AddressBox";
+            AddressBox.Size = new Size(75, 23);
+            AddressBox.TabIndex = 4;
+            AddressBox.Text = "localhost";
+            AddressBox.TextAlign = HorizontalAlignment.Center;
+            // 
+            // PortBox
+            // 
+            PortBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            PortBox.Location = new Point(282, 7);
+            PortBox.Name = "PortBox";
+            PortBox.Size = new Size(70, 23);
+            PortBox.TabIndex = 5;
+            PortBox.Text = "9000";
+            PortBox.TextAlign = HorizontalAlignment.Center;
+            // 
+            // UsernameBox
+            // 
+            UsernameBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            UsernameBox.Location = new Point(163, 46);
+            UsernameBox.Name = "UsernameBox";
+            UsernameBox.Size = new Size(75, 23);
+            UsernameBox.TabIndex = 6;
+            UsernameBox.Text = "Server";
+            UsernameBox.TextAlign = HorizontalAlignment.Center;
+            // 
+            // KeyBox
+            // 
+            KeyBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            KeyBox.Location = new Point(282, 46);
+            KeyBox.Name = "KeyBox";
+            KeyBox.Size = new Size(70, 23);
+            KeyBox.TabIndex = 7;
+            KeyBox.TextAlign = HorizontalAlignment.Center;
+            KeyBox.UseSystemPasswordChar = true;
+            KeyBox.TextChanged += KeyBox_TextChanged;
+            // 
+            // label3
+            // 
+            label3.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            label3.AutoSize = true;
+            label3.Location = new Point(94, 49);
+            label3.Name = "label3";
+            label3.Size = new Size(63, 15);
+            label3.TabIndex = 8;
+            label3.Text = "Username:";
+            // 
+            // label4
+            // 
+            label4.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            label4.AutoSize = true;
+            label4.Location = new Point(246, 49);
+            label4.Name = "label4";
+            label4.Size = new Size(29, 15);
+            label4.TabIndex = 9;
+            label4.Text = "Key:";
+            // 
+            // ShowKeyBox
+            // 
+            ShowKeyBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            ShowKeyBox.AutoSize = true;
+            ShowKeyBox.Location = new Point(266, 75);
+            ShowKeyBox.Name = "ShowKeyBox";
+            ShowKeyBox.Size = new Size(76, 19);
+            ShowKeyBox.TabIndex = 10;
+            ShowKeyBox.Text = "Show key";
+            ShowKeyBox.UseVisualStyleBackColor = true;
+            ShowKeyBox.CheckedChanged += ShowKeyBox_CheckedChanged;
+            // 
+            // ServerMessageBox
+            // 
+            ServerMessageBox.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            ServerMessageBox.Location = new Point(3, 288);
+            ServerMessageBox.Name = "ServerMessageBox";
+            ServerMessageBox.Size = new Size(268, 23);
+            ServerMessageBox.TabIndex = 11;
+            // 
+            // SendButton
+            // 
+            SendButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            SendButton.Location = new Point(277, 288);
+            SendButton.Name = "SendButton";
+            SendButton.Size = new Size(75, 23);
+            SendButton.TabIndex = 12;
+            SendButton.Text = "Send";
+            SendButton.UseVisualStyleBackColor = true;
+            SendButton.Click += SendButton_Click;
+            // 
+            // logTextBox
+            // 
+            logTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            logTextBox.BackColor = Color.White;
+            logTextBox.Location = new Point(3, 144);
+            logTextBox.Multiline = true;
+            logTextBox.Name = "logTextBox";
+            logTextBox.ReadOnly = true;
+            logTextBox.ScrollBars = ScrollBars.Vertical;
+            logTextBox.Size = new Size(349, 138);
+            logTextBox.TabIndex = 13;
+            // 
+            // ClearButton
+            // 
+            ClearButton.Location = new Point(3, 119);
+            ClearButton.Name = "ClearButton";
+            ClearButton.Size = new Size(75, 23);
+            ClearButton.TabIndex = 15;
+            ClearButton.Text = "Clear";
+            ClearButton.UseVisualStyleBackColor = true;
+            ClearButton.Click += ClearButton_Click;
+            // 
+            // label5
+            // 
+            label5.Anchor = AnchorStyles.Top;
+            label5.Location = new Point(144, 122);
+            label5.Name = "label5";
+            label5.Size = new Size(46, 19);
+            label5.TabIndex = 16;
+            label5.Text = "Log";
+            // 
+            // DisconnectAllButton
+            // 
+            DisconnectAllButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            DisconnectAllButton.Location = new Point(253, 118);
+            DisconnectAllButton.Name = "DisconnectAllButton";
+            DisconnectAllButton.Size = new Size(99, 23);
+            DisconnectAllButton.TabIndex = 17;
+            DisconnectAllButton.Text = "Disconnect all";
+            DisconnectAllButton.UseVisualStyleBackColor = true;
+            DisconnectAllButton.Click += DisconnectAllButton_Click;
             // 
             // ID_column
             // 
@@ -84,185 +224,37 @@
             NameColumn.Text = "Name";
             NameColumn.Width = 80;
             // 
-            // DisconnectColumn
+            // listView
             // 
-            DisconnectColumn.Text = "Disconnect";
-            DisconnectColumn.Width = 80;
+            listView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            listView.Columns.AddRange(new ColumnHeader[] { ID_column, NameColumn });
+            listView.FullRowSelect = true;
+            listView.Location = new Point(358, 2);
+            listView.MultiSelect = false;
+            listView.Name = "listView";
+            listView.Size = new Size(227, 310);
+            listView.TabIndex = 1;
+            listView.UseCompatibleStateImageBehavior = false;
+            listView.View = View.Details;
+            listView.ColumnClick += listView_ColumnClick;
             // 
-            // label1
+            // KickButton
             // 
-            label1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            label1.AutoSize = true;
-            label1.Location = new Point(148, 15);
-            label1.Margin = new Padding(4, 0, 4, 0);
-            label1.Name = "label1";
-            label1.Size = new Size(81, 25);
-            label1.TabIndex = 2;
-            label1.Text = "Address:";
-            // 
-            // label2
-            // 
-            label2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            label2.AutoSize = true;
-            label2.Location = new Point(351, 18);
-            label2.Margin = new Padding(4, 0, 4, 0);
-            label2.Name = "label2";
-            label2.Size = new Size(48, 25);
-            label2.TabIndex = 3;
-            label2.Text = "Port:";
-            // 
-            // AddressBox
-            // 
-            AddressBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            AddressBox.Location = new Point(233, 12);
-            AddressBox.Margin = new Padding(4, 5, 4, 5);
-            AddressBox.Name = "AddressBox";
-            AddressBox.Size = new Size(105, 31);
-            AddressBox.TabIndex = 4;
-            AddressBox.Text = "localhost";
-            AddressBox.TextAlign = HorizontalAlignment.Center;
-            // 
-            // PortBox
-            // 
-            PortBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            PortBox.Location = new Point(403, 12);
-            PortBox.Margin = new Padding(4, 5, 4, 5);
-            PortBox.Name = "PortBox";
-            PortBox.Size = new Size(98, 31);
-            PortBox.TabIndex = 5;
-            PortBox.Text = "9000";
-            PortBox.TextAlign = HorizontalAlignment.Center;
-            // 
-            // UsernameBox
-            // 
-            UsernameBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            UsernameBox.Location = new Point(233, 77);
-            UsernameBox.Margin = new Padding(4, 5, 4, 5);
-            UsernameBox.Name = "UsernameBox";
-            UsernameBox.Size = new Size(105, 31);
-            UsernameBox.TabIndex = 6;
-            UsernameBox.Text = "Server";
-            UsernameBox.TextAlign = HorizontalAlignment.Center;
-            // 
-            // KeyBox
-            // 
-            KeyBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            KeyBox.Location = new Point(403, 77);
-            KeyBox.Margin = new Padding(4, 5, 4, 5);
-            KeyBox.Name = "KeyBox";
-            KeyBox.Size = new Size(98, 31);
-            KeyBox.TabIndex = 7;
-            KeyBox.TextAlign = HorizontalAlignment.Center;
-            KeyBox.UseSystemPasswordChar = true;
-            KeyBox.TextChanged += KeyBox_TextChanged;
-            // 
-            // label3
-            // 
-            label3.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            label3.AutoSize = true;
-            label3.Location = new Point(134, 82);
-            label3.Margin = new Padding(4, 0, 4, 0);
-            label3.Name = "label3";
-            label3.Size = new Size(95, 25);
-            label3.TabIndex = 8;
-            label3.Text = "Username:";
-            // 
-            // label4
-            // 
-            label4.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            label4.AutoSize = true;
-            label4.Location = new Point(351, 82);
-            label4.Margin = new Padding(4, 0, 4, 0);
-            label4.Name = "label4";
-            label4.Size = new Size(44, 25);
-            label4.TabIndex = 9;
-            label4.Text = "Key:";
-            // 
-            // ShowKeyBox
-            // 
-            ShowKeyBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            ShowKeyBox.AutoSize = true;
-            ShowKeyBox.Location = new Point(375, 125);
-            ShowKeyBox.Margin = new Padding(4, 5, 4, 5);
-            ShowKeyBox.Name = "ShowKeyBox";
-            ShowKeyBox.Size = new Size(114, 29);
-            ShowKeyBox.TabIndex = 10;
-            ShowKeyBox.Text = "Show key";
-            ShowKeyBox.UseVisualStyleBackColor = true;
-            ShowKeyBox.CheckedChanged += ShowKeyBox_CheckedChanged;
-            // 
-            // ServerMessageBox
-            // 
-            ServerMessageBox.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            ServerMessageBox.Location = new Point(4, 480);
-            ServerMessageBox.Margin = new Padding(4, 5, 4, 5);
-            ServerMessageBox.Name = "ServerMessageBox";
-            ServerMessageBox.Size = new Size(381, 31);
-            ServerMessageBox.TabIndex = 11;
-            // 
-            // SendButton
-            // 
-            SendButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            SendButton.Location = new Point(396, 480);
-            SendButton.Margin = new Padding(4, 5, 4, 5);
-            SendButton.Name = "SendButton";
-            SendButton.Size = new Size(107, 38);
-            SendButton.TabIndex = 12;
-            SendButton.Text = "Send";
-            SendButton.UseVisualStyleBackColor = true;
-            SendButton.Click += SendButton_Click;
-            // 
-            // logTextBox
-            // 
-            logTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            logTextBox.BackColor = Color.White;
-            logTextBox.Location = new Point(4, 240);
-            logTextBox.Margin = new Padding(4, 5, 4, 5);
-            logTextBox.Multiline = true;
-            logTextBox.Name = "logTextBox";
-            logTextBox.ReadOnly = true;
-            logTextBox.ScrollBars = ScrollBars.Vertical;
-            logTextBox.Size = new Size(497, 227);
-            logTextBox.TabIndex = 13;
-            // 
-            // ClearButton
-            // 
-            ClearButton.Location = new Point(4, 198);
-            ClearButton.Margin = new Padding(4, 5, 4, 5);
-            ClearButton.Name = "ClearButton";
-            ClearButton.Size = new Size(107, 38);
-            ClearButton.TabIndex = 15;
-            ClearButton.Text = "Clear";
-            ClearButton.UseVisualStyleBackColor = true;
-            ClearButton.Click += ClearButton_Click;
-            // 
-            // label5
-            // 
-            label5.Anchor = AnchorStyles.Top;
-            label5.Location = new Point(206, 203);
-            label5.Margin = new Padding(4, 0, 4, 0);
-            label5.Name = "label5";
-            label5.Size = new Size(66, 32);
-            label5.TabIndex = 16;
-            label5.Text = "Log";
-            // 
-            // DisconnectAllButton
-            // 
-            DisconnectAllButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            DisconnectAllButton.Location = new Point(361, 197);
-            DisconnectAllButton.Margin = new Padding(4, 5, 4, 5);
-            DisconnectAllButton.Name = "DisconnectAllButton";
-            DisconnectAllButton.Size = new Size(141, 38);
-            DisconnectAllButton.TabIndex = 17;
-            DisconnectAllButton.Text = "Disconnect all";
-            DisconnectAllButton.UseVisualStyleBackColor = true;
-            DisconnectAllButton.Click += DisconnectAllButton_Click;
+            KickButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            KickButton.Location = new Point(510, 5);
+            KickButton.Name = "KickButton";
+            KickButton.Size = new Size(62, 23);
+            KickButton.TabIndex = 18;
+            KickButton.Text = "Kick";
+            KickButton.UseVisualStyleBackColor = true;
+            KickButton.Click += KickButton_Click;
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(834, 518);
+            ClientSize = new Size(584, 311);
+            Controls.Add(KickButton);
             Controls.Add(DisconnectAllButton);
             Controls.Add(label5);
             Controls.Add(ClearButton);
@@ -280,8 +272,7 @@
             Controls.Add(label1);
             Controls.Add(listView);
             Controls.Add(StartStopButton);
-            Margin = new Padding(4, 5, 4, 5);
-            MinimumSize = new Size(848, 546);
+            MinimumSize = new Size(598, 343);
             Name = "Form1";
             Text = "Server";
             ResumeLayout(false);
@@ -291,8 +282,6 @@
         #endregion
 
         private Button StartStopButton;
-        private ListView listView;
-        private ColumnHeader ID_column;
         private Label label1;
         private Label label2;
         private TextBox AddressBox;
@@ -308,7 +297,9 @@
         private Button ClearButton;
         private Label label5;
         private Button DisconnectAllButton;
+        private ColumnHeader ID_column;
         private ColumnHeader NameColumn;
-        private ColumnHeader DisconnectColumn;
+        private ListView listView;
+        private Button KickButton;
     }
 }

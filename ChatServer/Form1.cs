@@ -19,8 +19,10 @@ namespace ChatServer
         private bool started = false;
         private static Mutex logBoxMX = new Mutex();
         bool firstMessage = true;
+        
         public Form1()
         {
+            //listView.ListViewItemSorter = new ListViewComparer(1, SortOrder.Ascending);
             InitializeComponent();
         }
 
@@ -50,7 +52,19 @@ namespace ChatServer
 
             if (address == "localhost")
                 address = "127.0.0.1";
-            listener = new TcpListener(IPAddress.Parse(address), port);
+            IPAddress adr;
+            if (IPAddress.TryParse(address, out adr))
+            {
+                ;
+            }
+            else
+            {
+                var addresses = Dns.GetHostAddresses(address);
+                adr = addresses.FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork);
+                if (adr == null)
+                    adr = IPAddress.Parse("127.0.0.1");
+            }
+            listener = new TcpListener(adr, port);
             listener.Start();
             AppendLogTextBox("Listening for incoming connections...");
             AppendLogTextBox("IP: " + (IPAddress.Parse(address)).ToString() + ", Port: " + port.ToString());
@@ -96,6 +110,13 @@ namespace ChatServer
                         await otherStreamWriter.FlushAsync();
                     }
                 }
+                ListViewItem newItem = new ListViewItem(id.ToString());
+                newItem.SubItems.Add(names[id]);
+                newItem.Tag = id.ToString();
+                listView.Items.Add(newItem);
+
+
+
                 Task.Run(() => AwaitMessages(client, id));
             }
             else
@@ -107,6 +128,7 @@ namespace ChatServer
                 return;
             }
         }
+
         private async Task AwaitMessages(TcpClient client, int id)
         {
             NetworkStream stream = client.GetStream();
@@ -145,9 +167,17 @@ namespace ChatServer
                 }
             }
         }
-        private void Kick_User(int id)
+        private async void Kick_User(int id)
         {
             clients[id].Close();
+            foreach (ListViewItem item in listView.Items)
+            {
+                if (int.Parse(item.SubItems[0].Text) == id)
+                {
+                    listView.Items.Remove(item);
+                    break;
+                }
+            }
             AppendLogTextBox(names[id] + " has disconnected");
             clients.Remove(id);
             names.Remove(id);
@@ -212,5 +242,43 @@ namespace ChatServer
                 await otherStreamWriter.FlushAsync();
             }
         }
+
+        private void KickButton_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem item in listView.SelectedItems)
+                Kick_User(int.Parse(item.SubItems[0].Text));
+        }
+
+        private void listView_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+
+        }
     }
+    /*public class ListViewComparer : IComparer
+    {
+        private int columnToSort;
+        private SortOrder order;
+        public ListViewComparer()
+        {
+            columnToSort = 0;
+            order = SortOrder.Ascending;
+        }
+        public ListViewComparer(int columnToSort, SortOrder order)
+        {
+            this.columnToSort = columnToSort;
+            this.order = order;
+        }
+        public int Compare(object x, object y)
+        {
+            int result;
+            ListViewItem ItemX = (ListViewItem)x;
+            ListViewItem ItemY = (ListViewItem)y;
+            result = string.Compare(ItemX.SubItems[columnToSort].Text, ItemY.SubItems[columnToSort].Text);
+            if(order == SortOrder.Descending)
+            {
+                result *= -1;
+            }
+            return result;
+        }
+    }*/
 }

@@ -113,12 +113,12 @@ namespace Lab_Froms
         }
         private void Adjust()
         {
-            panelContainer.Location = new Point(0, 30);
+            panelContainer.Location = new Point(0, 25);
             panelContainer.Size = new Size(this.Width - 20, textBox.Location.Y - 5 - 25);
             panelContainer.Controls.Clear();
             panel = new Panel();
             panel.Controls.Clear();
-            panel.Size = new Size(panelContainer.Width - 28, 5);
+            panel.Size = new Size(panelContainer.Width - 20, 5);
             panel.BackColor = Color.White;
             panelContainer.Controls.Add(panel);
             foreach (var t in messages)
@@ -160,7 +160,19 @@ namespace Lab_Froms
             Authorization authorization = new Authorization(username, key);
             string json = JsonSerializer.Serialize(authorization);
 
-            await tcpClient.ConnectAsync(address, port);
+            try 
+            { 
+                await tcpClient.ConnectAsync(address, port); 
+            }
+            catch(Exception ex)
+            {
+                child.Finish("Unable to connect to server");
+                disconnectToolStripMenuItem.Enabled = false;
+                connectToolStripMenuItem.Enabled = true;
+                tcpClient = null;
+                return;
+            }
+
             child.UpdateProgressBar(25);
 
 
@@ -232,6 +244,7 @@ namespace Lab_Froms
         private void Server_Disconnect()
         {
             tcpClient.Close();
+            tcpClient = null;
             disconnectToolStripMenuItem.Enabled = false;
             connectToolStripMenuItem.Enabled = true;
             AddMessage(null, "Disconnected", DateTime.Now);
