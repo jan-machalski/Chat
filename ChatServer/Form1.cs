@@ -88,7 +88,7 @@ namespace ChatServer
             Messages.Authorization authorization = JsonSerializer.Deserialize<Messages.Authorization>(recieved);
             if (authorization.Key == key)
             {
-                AppendLogTextBox(authorization.Sender.ToString() + "has connected");
+                AppendLogTextBox(authorization.Sender.ToString() + " has connected");
                 clients.Add(lastID, client);
                 names.Add(lastID, authorization.Sender.ToString());
                 int id = lastID;
@@ -154,7 +154,7 @@ namespace ChatServer
                     return;
                 }
                 Messages.Message message = JsonSerializer.Deserialize<Messages.Message>(recieved);
-                AppendLogTextBox(message.Sender + message.Text);
+                AppendLogTextBox(message.Sender +": "+ message.Text);
                 foreach (var p in clients)
                 {
                     if (p.Value != client)
